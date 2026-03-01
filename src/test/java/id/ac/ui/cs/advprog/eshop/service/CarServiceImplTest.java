@@ -22,6 +22,9 @@ class CarServiceImplTest {
     @Mock
     CarRepository carRepository;
 
+    @Mock
+    IdGeneratorService idGenerator;
+
     @InjectMocks
     CarServiceImpl carService;
 
@@ -35,10 +38,22 @@ class CarServiceImplTest {
     }
 
     @Test
+    void testCreateWithNullId() {
+        Car newCar = new Car();
+        newCar.setCarName("Dodge");
+        when(idGenerator.generateId()).thenReturn("generated-id-lol");
+        Car created = carService.create(newCar);
+        assertEquals("generated-id-lol", created.getCarId());
+        verify(idGenerator, times(1)).generateId();
+        verify(carRepository, times(1)).create(newCar);
+    }
+
+    @Test
     void testCreate() {
         when(carRepository.create(car)).thenReturn(car);
         Car created = carService.create(car);
         assertEquals(car, created);
+        verify(idGenerator, never()).generateId();
         verify(carRepository, times(1)).create(car);
     }
 

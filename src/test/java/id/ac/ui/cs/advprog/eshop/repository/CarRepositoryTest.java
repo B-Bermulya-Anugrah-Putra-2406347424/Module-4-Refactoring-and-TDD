@@ -14,7 +14,7 @@ class CarRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        carRepository = new CarRepository();
+        carRepository = new CarRepositoryImpl();
     }
 
     @Test
@@ -30,14 +30,6 @@ class CarRepositoryTest {
         assertTrue(carIterator.hasNext());
         Car savedCar = carIterator.next();
         assertEquals(car.getCarId(), savedCar.getCarId());
-    }
-
-    @Test
-    void testCreateWithoutId() {
-        Car car = new Car();
-        car.setCarName("Honda Civic");
-        carRepository.create(car);
-        assertNotNull(car.getCarId());
     }
 
     @Test
