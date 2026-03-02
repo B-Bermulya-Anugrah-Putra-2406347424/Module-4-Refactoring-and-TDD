@@ -45,3 +45,28 @@ Menurut saya, implementasi *workflows* (GitHub Actions) dan *pipelines* yang tel
 Untuk **Continuous Integration**, saya telah mengonfigurasi *workflow* yang berjalan otomatis setiap kali ada proses `push` atau `pull request`. *Pipeline* ini secara otomatis melakukan proses *build*, menjalankan seluruh *unit test* dan menghasilkan laporan *code coverage* menggunakan Jacoco (yang saat ini sudah mencapai 100%), serta memindai kode dari potensi *bug* atau *code smell* menggunakan SonarCloud. Hal ini memastikan bahwa setiap iterasi kode baru telah divalidasi kebenarannya.
 
 Namun, untuk proses perilisan ke tahap *production* (PaaS Koyeb), implementasi saya saat ini belum memenuhi prinsip **Continuous Deployment** dengan sepenuhnya. Hal ini dikarenakan meskipun *codebase* sudah terintegrasi dan siap untuk dirilis (*deployable*), proses *deployment*-nya belum sepenuhnya otomatis. Saya masih perlu melakukan intervensi manual (menekan tombol *redeploy* di *dashboard* Koyeb) untuk memperbarui aplikasi yang *live*. Ke depannya, hal ini dapat ditingkatkan dengan memastikan konfigurasi *webhook/auto-deploy* dari GitHub ke Koyeb berjalan secara otomatis tanpa campur tangan developer.
+
+# Reflection [module-3]
+
+### SOLID Principles Implementation
+Dalam pengerjaan modul ini, saya berusaha menerapkan prinsip SOLID agar struktur kode menjadi lebih modular, terorganisir, dan mudah dikembangkan kedepannya. Beberapa prinsip yang saya implementasikan antara lain:
+
+* **Single Responsibility Principle (SRP)**: Saya memisahkan tanggung jawab *class* agar masing-masing hanya memiliki satu fokus fungsi. Contohnya, saya memisahkan `CarController` dari `ProductController` agar pengelolaan *routing* untuk entitas `Car` dan `Product` tidak bercampur dalam satu *class* yang sama.
+* **Open-Closed Principle (OCP)**: Saya memanfaatkan abstraksi melalui *interface* pada lapisan *service*. Dengan pendekatan ini, jika kedepannya ada kebutuhan *development* logika bisnis baru, saya cukup membuat implementasi *class* baru tanpa harus memodifikasi kode lama yang sudah stabil.
+* **Liskov Substitution Principle (LSP)**: Saya memastikan setiap *subclass* dapat menggantikan fungsi *parent class* tanpa merusak integritas sistem. Dalam implementasinya, saya menghilangkan dependensi yang tidak perlu antara `CarController` dan `ProductController` karena keduanya memiliki karakteristik fungsional yang berbeda.
+* **Interface Segregation Principle (ISP)**: Saya memastikan *interface* yang dibuat bersifat spesifik. *Class* hanya mengimplementasikan *method* yang benar-benar dibutuhkan, sehingga tidak ada ketergantungan pada *method* yang tidak relevan dengan tanggung jawab *class* tersebut.
+* **Dependency Inversion Principle (DIP)**: Saya menerapkan dependensi pada level abstraksi (*interface*), bukan pada implementasi konkret. Saat ini, *controller* bergantung pada `CarService` (*interface*) dan bukan langsung pada `CarServiceImpl`. Hal ini membuat sistem menjadi lebih *decoupled* dan mudah diuji.
+
+### Advantages of SOLID Principles Application
+Penerapan prinsip SOLID memberikan beberapa keuntungan signifikan terhadap kualitas dan skalabilitas *source code* pada proyek ini:
+
+* **Kemudahan Testing**: Dengan penerapan **DIP**, saya dapat melakukan *unit testing* pada *controller* dengan jauh lebih mudah menggunakan teknik *mocking*. Saya tidak perlu lagi melakukan *setup* seluruh lapisan *database* hanya untuk memvalidasi logika pada level *controller*.
+* **Minimalisir Side Effects**: Berkat **SRP**, setiap perubahan atau perbaikan *bug* pada fitur tertentu (seperti `Car`) tidak akan berdampak negatif pada stabilitas fitur lainnya. Cakupan modifikasi menjadi lebih terisolasi dan aman.
+* **Skalabilitas yang Lebih Baik**: Melalui **OCP**, proses penambahan fitur baru di masa mendatang menjadi lebih efisien. Saya dapat langsung menambahkan modul atau *class* baru tanpa risiko merusak fungsionalitas lama di *environment production*.
+
+### Disadvantages of Ignoring SOLID Principles
+Sebaliknya, mengabaikan prinsip SOLID dapat memunculkan tumpukan *Technical Debt* yang akan menyulitkan proses *development* kedepannya:
+
+* **Rigid Code**: Tanpa adanya **DIP**, perubahan pada satu komponen kecil (misalnya penyesuaian skema *database*) akan memaksa saya untuk mengubah banyak *class* lain secara manual. Hal ini membuat proses *maintenance* menjadi sangat melelahkan dan memakan waktu.
+* **Fragile Code**: Jika tidak menerapkan **SRP**, sebuah *class* dapat berkembang terlalu besar dan menangani terlalu banyak *logic*. Modifikasi pada satu baris kode di fitur A berpotensi besar merusak fitur B karena *coupling* antar logika yang terlalu ketat.
+* **Code Duplication**: Tanpa abstraksi yang terstruktur melalui **LSP** dan **ISP**, saya akan cenderung melakukan *copy-paste* potongan kode yang mirip di berbagai tempat. Hal ini jelas melanggar prinsip **DRY (Don't Repeat Yourself)** yang sudah saya terapkan di modul sebelumnya, serta meningkatkan risiko *human error* ketika ada pembaruan sistem.
