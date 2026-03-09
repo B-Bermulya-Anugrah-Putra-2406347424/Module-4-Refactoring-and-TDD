@@ -1,8 +1,10 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import org.junit.jupiter.api.Test;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PaymentTest {
@@ -12,7 +14,7 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
-        Payment payment = new Payment("1", "VOUCHER", paymentData);
+        Payment payment = new VoucherPayment("1", paymentData);
         assertEquals("SUCCESS", payment.getStatus());
     }
 
@@ -21,7 +23,7 @@ class PaymentTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP123");
 
-        Payment payment = new Payment("2", "VOUCHER", paymentData);
+        Payment payment = new VoucherPayment("2", paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 
@@ -31,7 +33,7 @@ class PaymentTest {
         paymentData.put("bankName", "BCA");
         paymentData.put("referenceCode", "REF12345");
 
-        Payment payment = new Payment("3", "BANK_TRANSFER", paymentData);
+        Payment payment = new BankTransferPayment("3", paymentData);
         assertEquals("SUCCESS", payment.getStatus());
     }
 
@@ -41,7 +43,7 @@ class PaymentTest {
         paymentData.put("bankName", "");
         paymentData.put("referenceCode", "REF12345");
 
-        Payment payment = new Payment("4", "BANK_TRANSFER", paymentData);
+        Payment payment = new BankTransferPayment("4", paymentData);
         assertEquals("REJECTED", payment.getStatus());
     }
 }
