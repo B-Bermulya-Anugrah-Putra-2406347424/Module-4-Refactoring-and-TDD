@@ -4,6 +4,7 @@ import id.ac.ui.cs.advprog.eshop.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private OrderService orderService;
 
     @Test
