@@ -38,7 +38,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=b-bermulya-anugrah-putra-2406347424
-            -Dsonar.projectKey=B-Bermulya-Anugrah-Putra-2406347424_Module-1-Coding-Standards
+            -Dsonar.projectKey=B-Bermulya-Anugrah-Putra-2406347424_Module-4-Refactoring-and-TDD
             -Dsonar.sources=src/main/java
             -Dsonar.tests=src/test/java
             -Dsonar.java.binaries=build/classes
