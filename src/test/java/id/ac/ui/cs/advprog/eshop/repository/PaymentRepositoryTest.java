@@ -76,4 +76,17 @@ class PaymentRepositoryTest {
         List<Payment> allPayments = paymentRepository.getAllPayments();
         assertEquals(2, allPayments.size());
     }
+
+    @Test
+    void testSaveUpdateAndFindNotFound() {
+        Payment p1 = new Payment("1", "V", new HashMap<>());
+        paymentRepository.save(p1);
+
+        Payment p2 = new Payment("1", "V", new HashMap<>());
+        paymentRepository.save(p2);
+
+        assertNotNull(paymentRepository.findById("1"));
+        assertNull(paymentRepository.findById("999"));
+        assertEquals(1, paymentRepository.getAllPayments().size());
+    }
 }

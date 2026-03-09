@@ -9,8 +9,11 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -67,5 +70,28 @@ class PaymentControllerTest {
                         .param("status", "SUCCESS"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/payment/admin/list"));
+    }
+
+    @Test
+    void testSetStatusSuccessFlow() throws Exception {
+        Payment payment = new Payment("1", "VOUCHER", new HashMap<>());
+        when(paymentService.getPayment("1")).thenReturn(payment);
+
+        mockMvc.perform(post("/payment/admin/set-status/1")
+                        .param("status", "SUCCESS"))
+                .andExpect(status().is3xxRedirection());
+
+        verify(paymentService).setStatus(any(), anyString());
+    }
+
+    @Test
+    void testSetStatusPaymentNotFound() throws Exception {
+        when(paymentService.getPayment("any")).thenReturn(null);
+
+        mockMvc.perform(post("/payment/admin/set-status/any")
+                        .param("status", "SUCCESS"))
+                .andExpect(status().is3xxRedirection());
+
+        verify(paymentService, times(0)).setStatus(any(), anyString());
     }
 }
