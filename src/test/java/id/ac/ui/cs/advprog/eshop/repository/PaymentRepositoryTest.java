@@ -1,6 +1,8 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.model.BankTransferPayment;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.VoucherPayment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +23,12 @@ class PaymentRepositoryTest {
 
         Map<String, String> paymentData1 = new HashMap<>();
         paymentData1.put("voucherCode", "ESHOP1234ABC5678");
-        payment1 = new Payment("1", "VOUCHER", paymentData1);
+        payment1 = new VoucherPayment("1", paymentData1);
 
         Map<String, String> paymentData2 = new HashMap<>();
         paymentData2.put("bankName", "BCA");
         paymentData2.put("referenceCode", "REF12345");
-        payment2 = new Payment("2", "BANK_TRANSFER", paymentData2);
+        payment2 = new BankTransferPayment("2", paymentData2);
     }
 
     @Test
