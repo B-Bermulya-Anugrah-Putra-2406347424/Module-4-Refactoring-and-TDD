@@ -1,4 +1,4 @@
-# Reflection [module-4]
+# Reflection [module-4] [tutorial]
 
 ### Test-Driven Development (TDD) Workflow Evaluation
 Berdasarkan panduan *self-reflection* dari Percival (2017), alur kerja TDD (*Red-Green-Refactor*) yang saya terapkan pada modul ini terbukti sangat bermanfaat bagi proses *development*. Menulis tes terlebih dahulu (fase *Red*) memaksa saya untuk memikirkan spesifikasi, *behavior*, dan *interface* dari sebuah sistem (seperti `OrderRepository` dan `OrderService`) dari sudut pandang *client* sebelum memikirkan implementasi teknisnya.
@@ -15,3 +15,20 @@ Setelah mengevaluasi rangkaian unit test yang telah saya buat (terutama pada `Or
 * **Repeatable**: Dengan menggunakan *mocking framework* seperti Mockito pada lapisan *Service*, tes dapat dijalankan secara konsisten di *environment* manapun (lokal maupun CI/CD *pipeline*) dan selalu memberikan hasil yang sama.
 * **Self-Validating**: Tes secara otomatis memvalidasi kebenarannya menggunakan *assertions* bawaan JUnit (seperti `assertEquals`, `assertTrue`, dan `assertThrows`). Tidak diperlukan pengecekan log atau output secara manual untuk mengetahui apakah tes lulus atau tidak.
 * **Timely**: Karena saya mengadopsi pendekatan TDD, tes selalu ditulis secara tepat waktu (tepat sebelum kode produksi diimplementasikan), bukan sebagai aktivitas *afterthought* di akhir siklus pengembangan.
+
+---
+
+# Reflection [module-4] [exercise]
+
+### TDD Workflow and Reflection
+Dalam pengerjaan fitur Payment ini, saya menerapkan alur kerja TDD (*Red-Green-Refactor*). Saya memulai dengan menulis unit test di fase **RED** untuk mendefinisikan ekspektasi perilaku sistem sebelum kode implementasi ada. Setelah itu, saya menulis kode seminimal mungkin di fase **GREEN** agar tes tersebut lulus.
+
+Fase yang paling krusial adalah **REFACTOR**. Awalnya, implementasi saya memiliki *code smell* berupa penggunaan *if-else* yang panjang untuk menentukan metode pembayaran, yang mana melanggar prinsip SOLID. Dengan adanya unit test sebagai pengaman, saya dapat melakukan refactor besar-besaran dengan percaya diri untuk memperbaiki struktur kode tersebut tanpa merusak fungsionalitas yang sudah ada.
+
+### Unit Testing Evaluation (F.I.R.S.T.)
+Unit test yang saya buat telah mengikuti prinsip F.I.R.S.T:
+* **Fast**: Penggunaan Mockito memastikan tes berjalan sangat cepat tanpa dependensi database asli.
+* **Independent**: Setiap tes bersifat mandiri berkat penggunaan `@BeforeEach`.
+* **Repeatable**: Tes memberikan hasil yang sama di lingkungan manapun.
+* **Self-Validating**: Menggunakan *assertions* otomatis untuk menentukan status kelulusan.
+* **Timely**: Tes ditulis sebelum kode implementasi (TDD).
